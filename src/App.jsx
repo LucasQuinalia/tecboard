@@ -3,7 +3,11 @@ import {Tema} from './componentes/Tema'
 import { FormularioDeEvento } from './componentes/FormularioDeEvento'
 import { Banner } from './componentes/Banner'
 import { CardEvento } from './componentes/CardEvento'
+import { useState } from 'react'
 
+function App() {
+
+  
   const temas = [
     {
       id: 1,
@@ -31,28 +35,37 @@ import { CardEvento } from './componentes/CardEvento'
     }
   ]
 
-  const eventos = [
+  const [eventos, setEventos] = useState([
     {
-      capa: 'https://raw.githubusercontent.com/viniciosneves/techboard-assets/refs/heads/main/imagem_1.png',
+      capa: 'https://raw.githubusercontent.com/viniciosneves/tecboard-assets/refs/heads/main/imagem_1.png',
       tema: temas[0],
       data: new Date(),
       titulo: 'Mulheres no Front'
     }
-  ]
+  ])
+  
+  function adicionarEvento(evento) {
+    //eventos.push(evento)
+    setEventos([...eventos, evento])
+  }
 
-function App() {
   return (
     <main>
       <header>
         <img src="/logo.png" alt="" />
       </header>
       <Banner/>
-      <FormularioDeEvento/>
+      <FormularioDeEvento 
+        temas={temas} 
+        aoSubmeter={adicionarEvento}
+      />
       {temas.map(function(item) {
         return (
           <section key={item.id}>
             <Tema tema={item}/>
-            <CardEvento evento={eventos[0]}/>
+            {eventos.map(function(item, index) {
+              return <CardEvento evento={item} key={index}/>
+            })}
           </section>
         )
       })}
